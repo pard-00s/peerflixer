@@ -4,6 +4,7 @@ const url = require('url')
 const parsetorrent = require('parse-torrent')
 // noinspection SpellCheckingInspection
 const peerflix = require('peerflix')
+const numeral = require('numeral')
 
 const activeServers = {}
 
@@ -39,6 +40,39 @@ function createServer (opts) {
     }
 
     if (request.method === 'GET') {
+      if (u.pathname === '/status') {
+        var bytes = function (num) {
+          return numeral(num).format('0.0b')
+        }
+
+        let html = '<h1>Status</h1><ul>'
+        for (let key in activeServers) {
+          if (!activeServers.hasOwnProperty(key)) continue
+          const engine = activeServers[key].peerflix
+          html += `
+            <li>
+                <h3>${key}</h3>
+                <dl>
+                    <dt>Streamers:</dt>
+                    <dd>${activeServers[key].connections}</dd>
+                    
+                    <dt>Speed:</dt>
+                    <dd>&downarrow;${bytes(engine.swarm.downloadSpeed())}/s &uparrow;${bytes(engine.swarm.uploadSpeed())}/s</dd>
+                    
+                    <dt>Peers:</dt>
+                    <dd>${engine.swarm.wires.filter(wire => !wire.peerChoking).length}/${engine.swarm.wires.length}</dd>
+                </dl>
+            </li>
+          `
+        }
+        html += '</ul>'
+
+        response.setHeader('Content-Type', 'text/html; charset=utf-8')
+        response.setHeader('Content-Length', Buffer.byteLength(html))
+        response.end(html)
+        return
+      }
+
       parsetorrent.remote(u.pathname.slice(1), function (err, torrent) {
         if (err) {
           response.statusCode = 401
@@ -49,7 +83,7 @@ function createServer (opts) {
         if (!(torrent.infoHash in activeServers)) {
           const shutdownServer = function () {
             engine.peerflix.remove(function () {
-              delete activeServers[torrent.infoHash]
+              delete activeServers[ torrent.infoHash ]
             })
           }
 

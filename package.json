@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/groupsky/peerflixer#readme",
   "dependencies": {
+    "numeral": "^2.0.6",
     "parse-torrent": "^6.0.0",
     "peerflix": "^0.37.0",
     "yargs": "^11.0.0"
