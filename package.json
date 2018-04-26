@@ -1,0 +1,30 @@
+{
+  "name": "peerflixer",
+  "version": "0.0.1",
+  "description": "Streaming torrent server",
+  "main": "index.js",
+  "bin": "cli/index.js",
+  "scripts": {
+    "dev": "nodemon cli/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/groupsky/peerflixer.git"
+  },
+  "author": "Geno Roupsky <geno@roupsky.name> (https://github.com/groupsky)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/groupsky/peerflixer/issues"
+  },
+  "homepage": "https://github.com/groupsky/peerflixer#readme",
+  "dependencies": {
+    "parse-torrent": "^6.0.0",
+    "peerflix": "^0.37.0",
+    "yargs": "^11.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.3",
+    "standard": "^11.0.1"
+  }
+}
