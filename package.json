@@ -5,6 +5,7 @@
   "main": "index.js",
   "bin": "cli/index.js",
   "scripts": {
+    "start": "node cli/index.js",
     "dev": "nodemon cli/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
